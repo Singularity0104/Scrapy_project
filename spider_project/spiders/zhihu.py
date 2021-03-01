@@ -1,15 +1,11 @@
 import scrapy
 import re
 import json
-import os
-
-from spider_project.items import zhihu_question_item
 
 class ZhihuSpider(scrapy.Spider):
     name = 'zhihu'
     allowed_domains = ['api.zhihu.com']
     # start_urls = ['https://www.zhihu.com/search?q=天津大学&type=content&range=1d']
-
     cookies = {
         "KLBRSID": "37f2e85292ebb2c2ef70f1d8e39c2b34|1613643579|1613643492",
         "Hm_lvt_98beee57fd2ef70ccdd5ca52b9740c49": "1613620841,1613620852,1613641306,1613641341",
@@ -19,9 +15,6 @@ class ZhihuSpider(scrapy.Spider):
         "_xsrf": "0PdrAiFldsVhbvjaohnslCYfrsCD2SOt"
 
     }
-
-
-
     search_words = [
         "天津大学"
     ]
@@ -51,13 +44,13 @@ class ZhihuSpider(scrapy.Spider):
     def parse(self, response):
         word = response.meta["word"]
         page_num = response.meta["page_num"]
-        text = response.body
-        dir_name = "./data/" + word + "/list"
-        if os.path.exists(dir_name) is False:
-            os.makedirs(dir_name)
-        file = open(dir_name + "/" + word + "_" + str(page_num) + ".html", "wb")
-        file.write(text)
-        file.close()
+        # text = response.body
+        # dir_name = "./data/" + word + "/list"
+        # if os.path.exists(dir_name) is False:
+        #     os.makedirs(dir_name)
+        # file = open(dir_name + "/" + word + "_" + str(page_num) + ".html", "wb")
+        # file.write(text)
+        # file.close()
         res = json.loads(response.text)
         if res["data"] is not None:
             for item in res["data"]:
@@ -100,13 +93,13 @@ class ZhihuSpider(scrapy.Spider):
     def parse_question_detail(self, response):
         question_item = response.meta["question_item"]
         page_num = response.meta["page_num"]
-        text = response.body
-        dir_name = "./data/" + question_item["search_word"] + "/details"
-        if os.path.exists(dir_name) is False:
-            os.makedirs(dir_name)
-        file = open(dir_name + "/" + question_item["id"] + "_" + str(page_num) + ".html", "wb")
-        file.write(text)
-        file.close()
+        # text = response.body
+        # dir_name = "./data/" + question_item["search_word"] + "/details"
+        # if os.path.exists(dir_name) is False:
+        #     os.makedirs(dir_name)
+        # file = open(dir_name + "/" + question_item["id"] + "_" + str(page_num) + ".html", "wb")
+        # file.write(text)
+        # file.close()
         res = json.loads(response.text)
         if res["data"] is not None:
             for item in res["data"]:
